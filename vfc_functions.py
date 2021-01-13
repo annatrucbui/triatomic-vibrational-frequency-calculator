@@ -1,39 +1,40 @@
 """
+Vibrational frequecy calculator functions
 
-
-
-Generate 
-1. potential energy surface plot for a triatomic 
-2. potential energy plot estimate near the equilibrium along 2 normal modes
-3. equilibrium geometry, equilibrium energy, vibrational frequencies
-
-Usage: $python3 VibFreqCalculator.py path/to/outputfiles/
-
-if none specified, ./H2Ooutfiles
-
+The functions in this file include
+    get_geometry_energy
+    dictionary_PES
+    plot_PES
+    get_equilibrium_geometry
+    fit_curve_nm
+    calculate_vib_frequencies
+    second_der
+    Hessian
+    
+These are used in the main program in VibFreqCalculator.py
 
 @author: btb32
+
 """
 
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+plt.rcParams["font.family"] = "Times New Roman"
 
 import math
 import scipy.optimize as optimize
 
 
-
-
-
 def get_gemeotry_energy(pathname, filename):
     """Take an output file from Gaussian and return r, theta and energy.
-    
-    filename: STR
-    r: FLOAT H-X bond length 
-    theta: FLOAT H-X-H bond angle 
-    energy: FLOAT
+    pathname: STR directory containing output files
+    filename: STR each output filename
+
     Returns: TUPLE (r, theta, energy)
+    r: FLOAT H-X bond length,  in Angstrom
+    theta: FLOAT H-X-H bond angle, in degree
+    energy: FLOAT, in Hartree
     
     """
     
@@ -106,10 +107,10 @@ def plot_PES(PES_dict, name="triatomic"):
     surf = ax.plot_surface(X, Y, Z, cmap=plt.get_cmap('hot') , linewidth=0, antialiased=False)
 
     # Customize the z axis.
-    ax.set_xlabel("X-H bond legnth/ Å")
-    ax.set_ylabel("H-X-H bong angle/ degrees")
-    ax.set_zlabel("Energy/ Hartrees")
-    ax.set_title("Potential Energy Surface for " + name)
+    ax.set_xlabel("X-H bond length / Å", fontsize=12)
+    ax.set_ylabel("H-X-H bong angle / degrees",  fontsize=12)
+    ax.set_zlabel("Energy / Hartrees", fontsize=12)
+    ax.set_title("Potential Energy Surface for " + name, fontsize=18)
     
 
     # Add a color bar which maps values to colors.
@@ -125,6 +126,8 @@ def get_equilibrium_geometry(PES_dict):
     """Takes a DICT of geometry and energy and returns the geometry with the minimum energy
     
     Returns: TUPLE (r, theta)
+    r: FLOAT equilibrium H-X bond length,  in Angstrom
+    theta: FLOAT equilibrium H-X-H bond angle, in degree
     """
     
     return min(PES_dict, key=PES_dict.get)
@@ -137,6 +140,19 @@ def fit_curve_nm(PES_dict, degree_of_freedom, number_points, toplot, name="triat
     """Return a quadratic fit for the normal mode
     using scipy.optimize.curve_fit that ses non-linear least squares to fit a function to data. 
     https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+    
+    Energies near the minimum along each normal mode are fitted to a quadratic function.
+    
+    PES_dict: DICT {(r, theta):energy}
+    degree_of_freedom: STR "r" or "theta"
+    number_points: INT number of points away from of the equilibrium (to each side) used in optimisation
+    toplot: BOOL 
+    name: STR name of molecule
+    
+    Save plot to a pdf file in ./PESoutputs/
+    Returns: TUPLE (k,kerr)
+    k: FLOAT force constant 
+    kerr: FLOAT standard deviation error
     
     """
     
@@ -167,20 +183,17 @@ def fit_curve_nm(PES_dict, degree_of_freedom, number_points, toplot, name="triat
     #fitting the quadratic with least squared method
     #p =np.polyfit(x,Energy,2)
     
-    
     params, pcov = optimize.curve_fit(PESfit, x, Energy , bounds=(0, np.inf))  
     kerr = np.sqrt(np.diag(pcov))[0] # one standard deviation errors on the parameters
     k = float(params[0])
-    
-    
-    
+     
     if toplot == True:
         if degree_of_freedom == "r":
             xfit=np.arange(r_0 - 0.05*number_points, r_0 + 0.05*(number_points+1), 0.005)
-            unit = "Angtrong"
+            unit = "Å"
         else: 
             xfit=np.arange(theta_0 - 1*number_points, theta_0 + 1*(number_points+1), 0.005)
-            unit = "Degree"
+            unit = "degree"
             
         yfit = energy_0 + 0.5*k*((xfit - x_0)**2)
        
@@ -188,8 +201,10 @@ def fit_curve_nm(PES_dict, degree_of_freedom, number_points, toplot, name="triat
         
         plt.scatter(x, Energy, color='red', marker='+')
         plt.plot(xfit, yfit)
+        
         #yerr = (0.38088/2) 
         #plt.errorbar(x, Energy, yerr=yerr, fmt='k.')  # Data
+        
         plt.title('Potential energy along ' + degree_of_freedom + " for " + name)
         plt.xlabel(str(degree_of_freedom) + " / " + unit)
         plt.ylabel('Energy / Hartrees')
@@ -197,23 +212,30 @@ def fit_curve_nm(PES_dict, degree_of_freedom, number_points, toplot, name="triat
         plt.show()
         plt.close()
     
-    
-    
     return k, kerr
 
 
 
 
 def calculate_vib_frequencies(k_r, k_theta, x_eq, y_eq):
+    """Return the vibrational frequencies from given force constants
+
+    k_r : FLOAT force constant when r = x_eq, in Hartree/(Angstrom)^2
+    k_theta : FLOAT force constant when  theta = y_eq, in Hartree/(degree)^2
+    x_eq : FLOAT equilibrium bond length, in Angstrom
+    y_eq : FLOAT equilibrium bond angle, in degree
+
+    Returns TUPLE(symm_stretch, bend)
+    symm_stretch : FLOAT strething frequency in wavenumber
+    bend : FLOAT strething frequency in wavenumber
+
+    """
     
     Hartree = 4.35974465054*(10**(-18))
     Degree = 0.0174533
     m_p = 1.6726219*(10**-27)
     Angstrom = 10**-10
     c = 29979245800
-
-
-
 
     
     k_r_ = k_r*Hartree*(Angstrom**-2)
@@ -228,6 +250,18 @@ def calculate_vib_frequencies(k_r, k_theta, x_eq, y_eq):
 
 
 def second_der(x,y, PES_dict):
+    """Return the crude estimate second derivatives at equilibrium.
+    Using finite difference method (second-order central)
+    https://en.wikipedia.org/wiki/Finite_difference
+    
+    x: STR "r" or "theta"
+    y: STR "r" or "theta"
+    PES_dict: DICT {(r, theta):energy}
+
+    Returns
+    value: FLOAT second derivative"
+
+    """
     r_0, theta_0 = get_equilibrium_geometry(PES_dict)
     def E(x, y):
         E = PES_dict[(round(x,1),round(y,1))]
@@ -247,6 +281,14 @@ def second_der(x,y, PES_dict):
     return value
 
 def Hessian(PES_dict):
+    """Return force constants along r and theta from crude estimate of the Hessian
+    PES_dict:
+    
+    Returns: TUPLE(k_r, k_theta)
+    k_r : FLOAT force constant when r = x_eq, in Hartree/(Angstrom)^2
+    k_theta : FLOAT force constant when  theta = y_eq, in Hartree/(degree)^2
+    """
+    
     r_0, theta_0 = get_equilibrium_geometry(PES_dict)
     H = np.zeros((2,2))
     
