@@ -1,6 +1,5 @@
-
 """
-Created on Sat Oct 24 16:32:12 2020
+
 
 
 Generate 
@@ -115,7 +114,7 @@ def plot_PES(PES_dict, name="triatomic"):
 
     # Add a color bar which maps values to colors.
     fig.colorbar(surf, shrink=0.6, aspect=5)
-    plt.savefig(name + '_PES.pdf')
+    plt.savefig("PESoutputs/" + name + '_PES.pdf')
     plt.show()
     plt.close()
     
@@ -194,7 +193,7 @@ def fit_curve_nm(PES_dict, degree_of_freedom, number_points, toplot, name="triat
         plt.title('Potential energy along ' + degree_of_freedom + " for " + name)
         plt.xlabel(str(degree_of_freedom) + " / " + unit)
         plt.ylabel('Energy / Hartrees')
-        plt.savefig(name +"_curve_fitting_along_" + degree_of_freedom +".pdf")
+        plt.savefig("PESoutputs/" + name +"_curve_fitting_along_" + degree_of_freedom +".pdf")
         plt.show()
         plt.close()
     

@@ -1,6 +1,4 @@
-
 """
-Created on Sat Oct 24 16:32:12 2020
 
 
 Generate 
@@ -22,44 +20,48 @@ import tarfile
 
 def main():
     
-    print('\nWelcome to Vibrational Frequency Calculator! \n')
-    print("Example format: H2Ooutfiles or extractedfiles/H20outfiles or H20outfiles.tar.bz2")
+    print ("**************************************************")
+    print('Welcome to the VIBRATIONAL FREQUENCY CALCULATOR!')
+    print ("**************************************************\n")
+    print("The program only takes relative path as input. Gaussian outfiles, either compressed on extracted, should be in the same directory as the program.")
+    print("""\nExample format: extracted/H2Ooutfiles 
+             or extracted/H2Soutfiles
+             or H2Ooutfiles.tar.bz2
+             or H2Soutfiles.tar.bz2""")
     
-
-    try:
-        dirname = input("Please enter directory name containing Gaussian out files: ")
-        
-        if "tar" in dirname:
-            tar = tarfile.open(dirname)
-            tar.extractall("./extractedfiles")
-            tar.close()
-            pathname = "./extractedfiles/" + dirname[:-8] +"/"
-            PES_dict = vfc.dictionary_PES(pathname)
-        else:
-            pathname = "./" + dirname + "/"
-            PES_dict = vfc.dictionary_PES(pathname) 
+    
+    goodinput = False
+    while (goodinput == False):
+        dirname = input("Please enter directory name containing Gaussian outfiles: ")
+        try:
             
-        name = dirname[0:3]
- 
-    except FileNotFoundError:
-        print("\nFile is not found so automatically select H2O file")
-        pathname = "./H2Ooutfiles/"
-        name = "H2O"
-        PES_dict = vfc.dictionary_PES(pathname)
-    except:
-        print("\nFile not correct type so automatically select H20 file")
-        pathname = "./H2Ooutfiles/"
-        name = "H2O"
-        PES_dict = vfc.dictionary_PES(pathname)
-
+            if "tar" in dirname:
+                print("\nExtracting tar archive...")
+                tar = tarfile.open(dirname)
+                tar.extractall("./extracted")
+                tar.close()
+                pathname = "./extracted/" + dirname[:-8] + "/"
+                PES_dict = vfc.dictionary_PES(pathname)
+                goodinput = True
+            else:
+                pathname = "./" + dirname + "/"
+                PES_dict = vfc.dictionary_PES(pathname) 
+                goodinput = True
+                
+            name = dirname[0:3]
+     
+        except FileNotFoundError:
+            print("File is not found. Please enter a valid directory.")
     
-    vfc.plot_PES(PES_dict, name)
 
+    vfc.plot_PES(PES_dict, name)
+    print("Plotting potential energy surface...")
+    
 
     r_eq, theta_eq = vfc.get_equilibrium_geometry(PES_dict)
     
     print("\nOptimum geometry:")
-    print(" bondlength =" + str(r_eq) + " Angstroms")
+    print(" bondlength = " + str(r_eq) + " Angstroms")
     print(" bond angle = " + str(theta_eq) + " degrees")
     
     print("\nFitting curve around minimum along r:")
