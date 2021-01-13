@@ -69,8 +69,8 @@ Experimental data vs computed data
 Experimetal source: https://webbook.nist.gov/
 
 <p float="left">
-  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_PES.jpg?raw=true" height="350" />
-  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2S_PES.jpg?raw=true" height=350" />
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_PES.jpg?raw=true" height="300" />
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2S_PES.jpg?raw=true" height=300" />
 
 </p>
 
