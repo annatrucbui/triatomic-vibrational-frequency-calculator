@@ -2,7 +2,7 @@
 A Python program that takes Gaussian output files for a triatomic at different geometies and return the potenial energy surface and the vibrational frequecies of the normal modes
 
 Program extracts SCF energy calculated from Gaussian file and uses this to generate a PES plot. The equilibrium geometry is then determined. 
-Vibrational frequencies can be estimated by fitting a quadratic curve along each normal mode OR calculated by diagonalising the Hessian matrix.
+Vibrational frequencies are estimated by fitting a quadratic curve along each normal mode and calculated by diagonalising the Hessian matrix.
 
 The calculation is applied to two examples:
 1. H20
@@ -22,8 +22,10 @@ requires Python 3.x
 ### The packages required include:
 
 1. NumPy (https://numpy.org/)
-2. Matplotlib
 
+2. Matplotlib (https://matplotlib.org/)
+
+3. SciPy (https://www.scipy.org/)
 
 
 ## Installation
@@ -33,15 +35,23 @@ From source:
 
 
 ## Running the program
-After finishing installation, you can run each example simulation as follow:
+After finishing installation, you can run the program as follow:
 
-	python3 VibFreqCalculator.py /pathname
+	python3 VibFreqCalculator.py
 
 
 ## Usage
 
-Input: directory pathname. Within directory are a set of Gaussian output files
+Input: directory pathname. Within directory are a set of Gaussian output files. Alternative: also take compressed .tar.bz2 and extract to readable output files.
 
-Output: Plot of PES as pdf and values of vibrational frequencies
+The program only takes relative path as input. Gaussian outfiles, either compressed on extracted, should be in the same directory as the program.
+
+
+Outputs: 
+1. potential energy surface plot for a triatomic 
+
+2. potential energy plot estimate near the equilibrium along 2 normal modes
+
+3. equilibrium geometry, equilibrium energy, vibrational frequencies
 
 
