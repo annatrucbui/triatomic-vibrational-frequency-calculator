@@ -57,17 +57,16 @@ Outputs:
 ## Examples
 
 Experimental data vs computed data
-Colons can be used to align columns.
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+<p float="left">
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_compare.jpg?raw=true" width="800" />
+</p>
 
-There must be at least 3 dashes separating each header cell.
-The outer pipes (|) are optional, and you don't need to make the 
-raw Markdown line up prettily. You can also use inline Markdown.
+<p float="left">
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_compare.jpg?raw=true" width="800" />
+</p>
+
+Experimetal source: https://webbook.nist.gov/
 
 <p float="left">
   <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_PES.jpg?raw=true" width="400" />

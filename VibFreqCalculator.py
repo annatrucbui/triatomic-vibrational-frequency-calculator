@@ -60,7 +60,7 @@ def main():
 
     r_eq, theta_eq = vfc.get_equilibrium_geometry(PES_dict)
     
-    print("\n Optimum geometry:")
+    print("\n Equilibrium geometry:")
     print("  bond length = " + str(r_eq) + " Angstroms")
     print("  bond angle = " + str(theta_eq) + " degrees")
     
