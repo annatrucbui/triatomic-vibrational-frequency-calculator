@@ -59,8 +59,15 @@ Outputs:
 Water:
 
 <p float="left">
-  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_PES.pdf?raw=true" width="400" />
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_PES.jpg?raw=true" width="400" />
 </p>
 
+
+
 Hydrogen Sulfide:
+
+<p float="left">
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2S_PES.jpg?raw=true" width="400" />
+</p>
+
 
