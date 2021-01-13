@@ -1,5 +1,5 @@
 """
-Created on Sat Oct 24 17:16:15 2020
+Unit test for funtions used in the Vibrational Frequency Calculator for Triatomic
 
 @author: btb32
 """
