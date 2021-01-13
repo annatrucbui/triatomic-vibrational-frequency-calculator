@@ -48,10 +48,19 @@ The program only takes relative path as input. Gaussian outfiles, either compres
 
 
 Outputs: 
-1. potential energy surface plot for a triatomic 
+1. Potential energy surface plot for a triatomic 
 
-2. potential energy plot estimate near the equilibrium along 2 normal modes
+2. Potential energy plot estimate near the equilibrium along 2 normal modes
 
-3. equilibrium geometry, equilibrium energy, vibrational frequencies
+3. Equilibrium geometry, equilibrium energy, vibrational frequencies
 
+## Examples
+
+Water:
+
+<p float="left">
+  <img src="https://github.com/annatrucbui/triatomic-vibrational-frequency-calculator/blob/master/PESoutputs/H2O_PES.pdf?raw=true" width="400" />
+</p>
+
+Hydrogen Sulfide:
 
